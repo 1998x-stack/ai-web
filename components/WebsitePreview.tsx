@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from 'react';
 
-interface SiteError {
+export interface SiteError {
   message: string;
   source: string;
   lineno: number;

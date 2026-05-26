@@ -1,0 +1,502 @@
+'use client';
+
+import { useState, useEffect, useCallback, useRef } from 'react';
+import SettingsModal, { type AppSettings } from '@/components/SettingsModal';
+import ErrorConsole, { type GameError } from '@/components/ErrorConsole';
+import ChatPanel, { type ChatMessage, type TodoUpdate } from '@/components/ChatPanel';
+import WebsitePreview from '@/components/WebsitePreview';
+import { Loader2 } from 'lucide-react';
+import { CONFIG } from '@/lib/config';
+
+const STORAGE_KEY = 'ai-web-settings';
+
+const defaultSettings: AppSettings = {
+  provider: 'DeepSeek',
+  apiKey: '',
+  model: CONFIG.providers.deepseek.defaultModel,
+  baseUrl: CONFIG.providers.deepseek.defaultBaseUrl,
+  githubToken: '',
+};
+
+function parseTodoForRestore(content: string): Array<{ task: string; status: 'pending' | 'done'; verify?: string }> {
+  const tasks: Array<{ task: string; status: 'pending' | 'done'; verify?: string }> = [];
+  for (const line of content.split('\n')) {
+    const pendingMatch = line.match(/^[-*]\s*\[ \]\s*(.+)/);
+    const doneMatch = line.match(/^[-*]\s*\[x\]\s*(.+)/i);
+    if (pendingMatch) {
+      tasks.push({ task: pendingMatch[1].trim(), status: 'pending' });
+    } else if (doneMatch) {
+      tasks.push({ task: doneMatch[1].trim(), status: 'done' });
+    }
+  }
+  return tasks;
+}
+
+export default function HomeContent() {
+  const [sessionId, setSessionId] = useState<string>('');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [siteUrl, setSiteUrl] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [errors, setErrors] = useState<GameError[]>([]);
+  const [settings, setSettings] = useState<AppSettings>(defaultSettings);
+  const [showSettings, setShowSettings] = useState(false);
+  const [leftWidth, setLeftWidth] = useState(40);
+  const [mobileView, setMobileView] = useState<'chat' | 'preview'>('chat');
+  const [restoringSession, setRestoringSession] = useState(false);
+  const [confirmNewSession, setConfirmNewSession] = useState(false);
+  const [todoUpdate, setTodoUpdate] = useState<TodoUpdate | null>(null);
+  const [githubRepoUrl, setGithubRepoUrl] = useState<string | null>(null);
+  const [isPushing, setIsPushing] = useState(false);
+
+  const isDragging = useRef(false);
+
+  // Initialize session ID — check URL param first, otherwise new UUID
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlSessionId = params.get('session');
+    if (urlSessionId) {
+      setSessionId(urlSessionId);
+    } else {
+      setSessionId(crypto.randomUUID());
+    }
+  }, []);
+
+  // Load session from API when sessionId comes from URL param
+  useEffect(() => {
+    if (!sessionId) return;
+    const params = new URLSearchParams(window.location.search);
+    const urlSessionId = params.get('session');
+    // Only restore if URL param matches current sessionId (prevents New Session from triggering restore)
+    if (!urlSessionId || urlSessionId !== sessionId) return;
+
+    setRestoringSession(true);
+    fetch(`/api/session/${sessionId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          const errMsg: ChatMessage = {
+            role: 'agent',
+            content: `Could not restore previous session: ${data.error}. Starting a fresh session.`,
+          };
+          setMessages([errMsg]);
+          return;
+        }
+        const loaded: ChatMessage[] = [];
+        for (const msg of data.messages) {
+          if (msg.role === 'user') {
+            loaded.push({ role: 'user', content: msg.content });
+          } else if (msg.role === 'assistant') {
+            const hasToolCalls = msg.tool_calls && (msg.tool_calls as unknown[]).length > 0;
+            const hasBuildSite = hasToolCalls && (msg.tool_calls as Array<{name: string}>).some(tc => tc.name === 'build_website');
+            loaded.push({
+              role: 'agent',
+              content: msg.content || (hasToolCalls ? 'Done.' : ''),
+              reasoningContent: msg.reasoning_content || undefined,
+              toolCalls: msg.tool_calls || undefined,
+              // Reconstruct buildResult: set on the LAST message with a successful build_website call
+              buildResult: hasBuildSite && data.hasBuild ? true : undefined,
+            });
+          }
+        }
+        if (loaded.length > 0) {
+          setMessages(loaded);
+        }
+        if (data.siteUrl) {
+          setSiteUrl(data.siteUrl);
+        }
+        if (data.gitPagesUrl) {
+          setGithubRepoUrl(data.gitPagesUrl);
+        }
+        if (data.todoContent) {
+          try {
+            const tasks = parseTodoForRestore(data.todoContent);
+            if (tasks.length > 0) {
+              const done = tasks.filter(t => t.status === 'done').length;
+              const pending = tasks.filter(t => t.status === 'pending').length;
+              const next = tasks.find(t => t.status === 'pending');
+              setTodoUpdate({ tasks, done, pending, next: next?.task });
+            }
+          } catch { /* invalid todo format */ }
+        }
+      })
+      .catch(() => {
+        const errMsg: ChatMessage = {
+          role: 'agent',
+          content: 'Could not load previous session — it may have expired. Start a new conversation below.',
+        };
+        setMessages([errMsg]);
+      })
+      .finally(() => {
+        setRestoringSession(false);
+      });
+  }, [sessionId]);
+
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Partial<AppSettings>;
+        setSettings((prev) => ({ ...prev, ...parsed }));
+      } else {
+        // First load, no saved settings -> auto-open settings
+        setShowSettings(true);
+      }
+    } catch {
+      setShowSettings(true);
+    }
+  }, []);
+
+  // Keyboard shortcut
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowSettings((v) => !v);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const handleSendMessage = useCallback(
+    async (content: string) => {
+      if (isGenerating) return;
+
+      // Add user message
+      const userMsg: ChatMessage = { role: 'user', content };
+      setMessages((prev) => [...prev, userMsg]);
+      setIsGenerating(true);
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId,
+            message: content,
+            stream: true,
+            config: settings,
+          }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || `Server error: ${res.status}`);
+        }
+
+        const reader = res.body!.getReader();
+        const decoder = new TextDecoder();
+
+        const streamedToolCalls: ChatMessage['toolCalls'] = [];
+        let streamedContent = '';
+        let streamedReasoning = '';
+
+        const agentMsg: ChatMessage = {
+          role: 'agent',
+          content: '',
+          toolCalls: streamedToolCalls,
+        };
+        setMessages((prev) => [...prev, agentMsg]);
+
+        let buffer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            try {
+              const event = JSON.parse(line.slice(6));
+              switch (event.type) {
+                case 'reasoning':
+                  streamedReasoning += event.content;
+                  break;
+                case 'message':
+                  streamedContent += event.content;
+                  break;
+                case 'tool_call':
+                  streamedToolCalls.push({
+                    name: event.name,
+                    arguments: event.arguments,
+                  });
+                  break;
+                case 'github_push_result':
+                  setIsPushing(false);
+                  if (event.success) {
+                    setGithubRepoUrl(event.pagesUrl || event.repoUrl || null);
+                  }
+                  // fall through to update agent message
+                  agentMsg.githubPushResult = event.success;
+                  if (event.pagesUrl) agentMsg.githubPagesUrl = event.pagesUrl;
+                  break;
+                case 'build_result':
+                  if (event.success && event.previewUrl) {
+                    setSiteUrl(event.previewUrl);
+                  }
+                  // fall through to update buildResult
+                  agentMsg.buildResult = event.success;
+                  break;
+                case 'todo_update':
+                  setTodoUpdate({
+                    tasks: event.tasks,
+                    done: event.done,
+                    pending: event.pending,
+                    next: event.next,
+                  } as TodoUpdate);
+                  break;
+                case 'error':
+                  streamedContent += `\nError: ${event.message}`;
+                  break;
+              }
+              agentMsg.content = streamedContent;
+              agentMsg.reasoningContent = streamedReasoning || undefined;
+              setMessages((prev) => {
+                const updated = [...prev];
+                updated[updated.length - 1] = { ...agentMsg };
+                return updated;
+              });
+            } catch {
+              // skip malformed SSE lines
+            }
+          }
+        }
+
+        if (!streamedContent && streamedToolCalls.length > 0) {
+          agentMsg.content = 'Done.';
+        }
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { ...agentMsg };
+          return updated;
+        });
+      } catch (err) {
+        const errMsg: ChatMessage = {
+          role: 'agent',
+          content: `Network error: ${err instanceof Error ? err.message : 'Request failed'}`,
+        };
+        setMessages((prev) => [...prev, errMsg]);
+      } finally {
+        setIsGenerating(false);
+      }
+    },
+    [sessionId, settings, isGenerating]
+  );
+
+  const handleNewSession = useCallback(() => {
+    // If there are messages or a site, require confirmation
+    if (messages.length > 0 || siteUrl) {
+      setConfirmNewSession(true);
+      return;
+    }
+    doNewSession();
+  }, [messages.length, siteUrl]);
+
+  const doNewSession = useCallback(() => {
+    setSessionId(crypto.randomUUID());
+    setMessages([]);
+    setSiteUrl(null);
+    setErrors([]);
+    setTodoUpdate(null);
+    setGithubRepoUrl(null);
+    setConfirmNewSession(false);
+  }, []);
+
+  const handleSettingsSave = useCallback((s: AppSettings) => {
+    setSettings(s);
+  }, []);
+
+  const handleGameError = useCallback((err: GameError) => {
+    setErrors((prev) => [...prev.slice(-49), err]);
+  }, []);
+
+  const handleClearErrors = useCallback(() => {
+    setErrors([]);
+  }, []);
+
+  const handlePushToGitHub = useCallback(() => {
+    if (!settings.githubToken || !siteUrl) return;
+    setIsPushing(true);
+    handleSendMessage(
+      'Please push the current site to GitHub using the github_push tool. Make it a public repository.'
+    );
+  }, [settings.githubToken, siteUrl, handleSendMessage]);
+
+  // Resizable divider logic
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isDragging.current = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return;
+      const pct = (e.clientX / window.innerWidth) * 100;
+      setLeftWidth(Math.min(Math.max(pct, 30), 55));
+    };
+
+    const handleMouseUp = () => {
+      if (isDragging.current) {
+        isDragging.current = false;
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
+  // Detect mobile
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  return (
+    <div className="h-screen w-screen overflow-hidden flex">
+      {/* Restoring session overlay */}
+      {restoringSession && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3 px-8 py-6 rounded-lg bg-panel-bg border border-panel-border shadow-2xl">
+            <Loader2 className="w-6 h-6 text-panel-accent animate-spin" />
+            <p className="text-sm text-panel-muted">Restoring previous session...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile toggle tabs */}
+      {isMobile && (
+        <div className="fixed top-0 left-0 right-0 z-30 flex border-b border-panel-border bg-panel-bg">
+          <button
+            onClick={() => setMobileView('chat')}
+            className={`flex-1 py-2 text-xs font-medium transition-colors ${
+              mobileView === 'chat'
+                ? 'text-panel-accent border-b-2 border-panel-accent'
+                : 'text-panel-muted'
+            }`}
+          >
+            Chat
+          </button>
+          <button
+            onClick={() => setMobileView('preview')}
+            className={`flex-1 py-2 text-xs font-medium transition-colors ${
+              mobileView === 'preview'
+                ? 'text-panel-accent border-b-2 border-panel-accent'
+                : 'text-panel-muted'
+            }`}
+          >
+            Preview
+          </button>
+        </div>
+      )}
+
+      {/* Left panel - Chat */}
+      <div
+        className={`flex flex-col ${
+          isMobile
+            ? `${mobileView === 'chat' ? 'flex-1 pt-10' : 'hidden'}`
+            : ''
+        }`}
+        style={
+          !isMobile
+            ? { width: `${leftWidth}%`, minWidth: 350, maxWidth: 600 }
+            : undefined
+        }
+      >
+        <ChatPanel
+          messages={messages}
+          onSend={handleSendMessage}
+          onOpenSettings={() => setShowSettings(true)}
+          onNewGame={handleNewSession}
+          isGenerating={isGenerating}
+          sessionId={sessionId}
+          todoUpdate={todoUpdate}
+        />
+      </div>
+
+      {/* Resizable divider (desktop only) */}
+      {!isMobile && (
+        <div
+          onMouseDown={handleMouseDown}
+          className="w-[4px] cursor-col-resize bg-panel-border hover:bg-panel-accent/70 active:bg-panel-accent hover:shadow-[0_0_12px_-2px_rgba(233,69,96,0.4)] transition-all duration-200 shrink-0 relative z-10"
+        />
+      )}
+
+      {/* Right panel - Site Preview + ErrorConsole */}
+      <div
+        className={`flex flex-col flex-1 min-w-0 ${
+          isMobile
+            ? `${mobileView === 'preview' ? 'flex-1 pt-10' : 'hidden'}`
+            : ''
+        }`}
+      >
+        <div className="flex-1 min-h-0">
+          <WebsitePreview
+            siteUrl={siteUrl}
+            errors={errors}
+            onError={handleGameError}
+          />
+        </div>
+
+        <ErrorConsole errors={errors} onClear={handleClearErrors} />
+      </div>
+
+      {/* Confirm new session dialog */}
+      {confirmNewSession && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setConfirmNewSession(false)}
+          />
+          <div
+            className="relative w-full max-w-sm mx-4 rounded-lg border border-panel-border bg-panel-bg shadow-2xl shadow-black/50 p-6"
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Confirm new session"
+          >
+            <h3 className="text-base font-semibold text-panel-text mb-2">Start a new session?</h3>
+            <p className="text-sm text-panel-muted mb-5">
+              This will clear the current conversation and site. Your previous session won&apos;t be recoverable.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button
+                onClick={() => setConfirmNewSession(false)}
+                className="px-4 py-2 text-sm text-panel-muted hover:text-panel-text transition-colors rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={doNewSession}
+                className="px-4 py-2 text-sm font-medium text-white bg-panel-accent rounded hover:bg-red-500/90 transition-colors"
+                autoFocus
+              >
+                Start New
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Settings Modal */}
+      <SettingsModal
+        open={showSettings}
+        onClose={() => setShowSettings(false)}
+        onSave={handleSettingsSave}
+      />
+    </div>
+  );
+}
