@@ -1,0 +1,86 @@
+export interface AgentConfig {
+  provider: 'deepseek' | 'openai' | 'claude';
+  apiKey: string;
+  model: string;
+  baseUrl?: string;
+  maxIterations?: number;
+  toolTimeout?: number;
+  fallbackModel?: string;
+  signal?: AbortSignal;
+  githubToken?: string;
+}
+
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>;
+}
+
+export interface ToolHandler {
+  definition: ToolDefinition;
+  handler: (args: Record<string, unknown>, workspaceRoot: string, config?: AgentConfig) => Promise<string>;
+}
+
+export interface ToolCall {
+  id: string;
+  name: string;
+  arguments: Record<string, unknown>;
+}
+
+export interface ToolResult {
+  id: string;
+  name: string;
+  result: string;
+  error?: string;
+}
+
+export interface AgentMessage {
+  role: 'system' | 'user' | 'assistant' | 'tool';
+  content: string;
+  tool_calls?: ToolCall[];
+  tool_call_id?: string;
+  reasoning_content?: string;
+}
+
+export interface AgentResponse {
+  message: string;
+  toolCalls: ToolCall[];
+  finishReason: 'stop' | 'tool_calls' | 'length';
+  usage?: TokenUsage;
+}
+
+export interface TokenUsage {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+}
+
+export type StreamEvent =
+  | { type: 'message'; content: string }
+  | { type: 'reasoning'; content: string }
+  | { type: 'tool_call'; name: string; arguments: Record<string, unknown> }
+  | { type: 'tool_result'; name: string; result: string; error?: string }
+  | { type: 'build_result'; previewUrl: string; success: boolean }
+  | { type: 'github_push_result'; repoUrl?: string; pagesUrl?: string; success: boolean; error?: string }
+  | { type: 'site_preview'; url: string }
+  | { type: 'error'; message: string }
+  | { type: 'done' }
+  | {
+      type: 'todo_update';
+      tasks: Array<{ task: string; status: 'pending' | 'done' }>;
+      done: number;
+      pending: number;
+      next?: string;
+    };
+
+export interface AgentSession {
+  sendMessage(content: string, signal?: AbortSignal): Promise<AgentResponse>;
+  sendMessageStream(
+    content: string,
+    onEvent: (event: StreamEvent) => void,
+    signal?: AbortSignal,
+  ): Promise<AgentResponse>;
+  getHistory(): AgentMessage[];
+  loadHistory(messages: AgentMessage[]): void;
+  reset(): void;
+}
