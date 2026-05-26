@@ -1,88 +1,68 @@
-# 🌐 AI Web Studio
-
-> **Natural Language to Production Sites — Chat to develop, see it render instantly.**
->
-> *用自然语言创造网站 — 对话即开发，所见即所得。*
-
 <p align="center">
   <img src="https://img.shields.io/github/stars/1998x-stack/ai-web?style=for-the-badge&color=3b82f6" alt="Stars">
   <img src="https://img.shields.io/github/license/1998x-stack/ai-web?style=for-the-badge&color=0f3460" alt="License">
   <img src="https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js" alt="Next.js">
   <img src="https://img.shields.io/badge/TypeScript-5.4-3178c6?style=for-the-badge&logo=typescript" alt="TypeScript">
   <img src="https://img.shields.io/badge/DeepSeek-API-4d6bfe?style=for-the-badge" alt="DeepSeek">
+  <br>
+  <img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build">
+  <img src="https://img.shields.io/badge/tools-11-blue?style=flat-square" alt="11 agent tools">
+  <img src="https://img.shields.io/badge/scaffold%20guides-6-blue?style=flat-square" alt="6 scaffold guides">
+  <img src="https://img.shields.io/badge/templates-4-blue?style=flat-square" alt="4 site templates">
+  <img src="https://img.shields.io/badge/gotchas-21-blue?style=flat-square" alt="21 gotchas">
 </p>
+
+# AI Web Studio
+
+**Chat with an AI agent to generate production-ready websites — HTML, CSS, and JavaScript — instantly previewable in a split-panel UI.**
+
+*用自然语言创造网站 — 对话即开发，所见即所得。*
+
+<br>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build">
-  <img src="https://img.shields.io/badge/tools-11-brightgreen?style=flat-square" alt="Tools">
-  <img src="https://img.shields.io/badge/templates-4-brightgreen?style=flat-square" alt="Templates">
-  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs">
+  <img src="assets/screenshot.png" alt="AI Web Studio Screenshot" width="100%" style="border-radius: 12px; box-shadow: 0 0 60px rgba(59, 130, 246, 0.15);" />
 </p>
 
+<br>
+
 ---
 
-## ✨ Core Capabilities
+## What Makes This Different
 
-<table>
-<tr>
-<td width="50%">
+Most AI coding tools generate code in a text editor. AI Web Studio runs a **scaffold-first agent pipeline** — the AI reads authoritative web development guides, studies production-quality templates, and writes body-only HTML that a build pipeline wraps into a complete, self-contained site. You see the result instantly in a sandboxed preview.
 
-### 💬 Natural Language Driven
-Describe your site in Chinese or English — *"Build a SaaS landing page with hero, features, and pricing"*, *"Create a dark-themed portfolio"*. The agent reads scaffold documentation, studies templates, and generates optimized HTML/CSS/JS code.
-
-### 🤖 Subagent Delegation
-The agent spawns up to 3 research subagents for low-signal-to-noise tasks — reading documentation, searching code patterns, gathering context — freeing the main agent for high-level design decisions.
-
-### 📋 Todo Visualization
-Site plans are extracted from `todo.md` and rendered as interactive progress cards in the chat — progress bar, checkbox list with completion status, and next-task indicator.
-
-</td>
-<td width="50%">
-
-### ⚡ Streaming Generation
-Every tool call, reasoning chain, and code output streams in real-time. The entire development process is transparent — not a black box.
-
-### 🛡️ Model Resilience
-Built-in fallback mechanism: when the primary model (deepseek-v4-pro) is unavailable, the system automatically retries with the fallback (deepseek-v4-flash) — for both the main agent loop and subagent delegation.
-
-### 🌐 Responsive Preview
-The right-panel iframe renders your Site at customizable viewport widths (375px mobile, 768px tablet, 1200px desktop). Fullscreen mode. Draggable resize handle for freeform testing.
-
-</td>
-</tr>
-</table>
-
-### Additional Features
-
-| Feature | Description |
+| Traditional AI Coding | AI Web Studio |
 |---|---|
-| 🎨 **Scaffold-First Generation** | Agent reads 6 authoritative web dev guides before writing code. 5 guides + 21 gotchas + 4 templates. |
-| 🔄 **Iterative Refinement** | Multi-turn conversations refine every aspect — layout, colors, typography, interactivity. |
-| 🧠 **Knowledge Flywheel** | Gotchas, utils, and skills are agent-extensible. Every solved problem becomes reusable knowledge. |
-| 📦 **Self-Contained Builds** | All HTML/CSS/JS + assets → single HTML file. Zero external dependencies. Instant preview. |
-| 🔌 **BYO-Key Architecture** | Bring your own DeepSeek API key. No server-side key storage. OpenAI-compatible endpoints supported. |
-| 🌐 **Session Persistence** | JSONL file-based persistence survives server restarts. `?session={id}` restores full conversation + Site state. |
-| ♿ **Accessibility Built-In** | Semantic HTML, ARIA labels, keyboard navigation, color contrast, skip-to-content link — all auto-enforced. |
-| 🖼️ **Unsplash Integration** | Agent can search and embed real stock photos. Falls back to placeholder images if no API key configured. |
+| Generates code snippets in an IDE | Generates complete, standalone Sites |
+| You figure out how to preview it | Instant iframe preview with viewport controls |
+| No guardrails — AI guesses best practices | 6 scaffold guides + 21 gotchas enforce quality |
+| Manual iteration — copy, paste, tweak | Multi-turn conversation refines in place |
 
 ---
 
-## 🚀 Quick Start
+## Screenshot
+
+> Split-panel design: chat with the agent on the left, preview the generated site on the right. Viewport presets (375/768/1200px), draggable resize handle, fullscreen mode. Todo cards track progress.
+
+---
+
+## Quick Start
 
 ```bash
 git clone https://github.com/1998x-stack/ai-web.git
 cd ai-web
 npm install
 npm run dev
-# Open http://localhost:3000
-# Configure your DeepSeek API Key → Start creating sites
 ```
 
-**Prerequisites**: Node.js 18+ | [DeepSeek API Key](https://platform.deepseek.com/)
+Open `http://localhost:3000`, configure your DeepSeek API key in Settings, and describe the site you want.
+
+**Requirements**: Node.js 18+ · [DeepSeek API Key](https://platform.deepseek.com/)
 
 ---
 
-## 🏗️ Architecture
+## How It Works
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -91,23 +71,19 @@ npm run dev
 │   Chat Panel (left)  │        Site Preview (right)               │
 │                      │                                            │
 │  ┌────────────────┐  │  ┌─────────────────────────────────────┐  │
-│  │ User: "Build a │  │  │                                     │  │
-│  │   SaaS landing │──┼─▶│   ┌───────────────────────────┐    │  │
-│  │   page"        │  │  │   │  🌐 Generated Site         │    │  │
-│  └────────────────┘  │  │   │  (sandbox iframe)          │    │  │
-│                      │  │   └───────────────────────────┘    │  │
-│  ┌────────────────┐  │  │                                     │  │
-│  │ Agent:          │  │  │   [Mobile | Tablet | Desktop]     │  │
-│  │  📁 read_file  │◀─┼──│   [Fullscreen]                     │  │
-│  │  ✏️ write_file │  │  │                                     │  │
-│  │  🔍 grep_file  │  │  │   [Error Console]                  │  │
-│  │  🖼️ unsplash   │  │  │                                     │  │
-│  │  🌐 build_site │  │  │   [Todo Card: 4/6 done]            │  │
-│  │  ✅ Build OK!   │  │  └─────────────────────────────────────┘  │
+│  │ "Build a SaaS  │  │  │                                     │  │
+│  │  landing page" │──┼─▶│   ┌───────────────────────────┐    │  │
+│  └────────────────┘  │  │   │  Generated Site            │    │  │
+│                      │  │   │  (sandbox iframe)          │    │  │
+│  ┌────────────────┐  │  │   └───────────────────────────┘    │  │
+│  │ Agent reads    │◀─┼──│                                     │  │
+│  │ scaffold →     │  │  │   [Mobile | Tablet | Desktop]      │  │
+│  │ plans → writes │  │  │   [Fullscreen] [Resize Handle]     │  │
+│  │ → builds → ✅  │  │  └─────────────────────────────────────┘  │
 │  └────────────────┘  │                                            │
 ├──────────────────────┴───────────────────────────────────────────┤
 │                   Agent Pipeline (11 tools)                        │
-│   System Prompt → Scaffold Docs → Gotchas → Templates → Tool Loop  │
+│   System Prompt → 6 Scaffold Docs → Gotchas → Templates → Loop    │
 │         ↓                     ↓                                    │
 │   scripts/*.{html,css,js}  build_website → output/index.html       │
 │         ↓                     ↓                                    │
@@ -115,7 +91,67 @@ npm run dev
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-### Tech Stack
+### The Agent Loop
+
+1. **User sends a prompt** — "Build a modern portfolio with dark theme"
+2. **Agent reads scaffold** — 6 web dev guides (responsive design, patterns, a11y, SEO, interactive UI, gotchas)
+3. **Agent plans** — writes a todo checklist with verifiable tasks
+4. **Agent writes code** — body-only HTML in `scripts/index.html`, CSS in `styles.css`, JS in `main.js`
+5. **Agent finds assets** — searches Unsplash for real stock photos, falls back to placeholders
+6. **Build pipeline assembles** — wraps body content in complete document shell with meta tags, skip-link, error handler, inlined CSS/JS, base64 assets
+7. **Preview updates instantly** — sandbox iframe renders the built Site
+
+---
+
+## Core Features
+
+<table>
+<tr>
+<td width="50%">
+
+### Scaffold-First Generation
+The agent reads 6 authoritative web development guides before writing a single line of code. 21 documented gotchas prevent common mistakes. Every generated site follows semantic HTML, responsive CSS, and accessible patterns by default.
+
+### Streaming Transparency
+Every tool call, reasoning chain, and code output streams in real-time. You see the agent read docs, plan tasks, write files, search for images — not a black box.
+
+### Subagent Delegation
+The agent spawns up to 3 research subagents for reading documentation and searching patterns, freeing the main agent for high-level design decisions.
+
+</td>
+<td width="50%">
+
+### Iterative Refinement
+Multi-turn conversations refine every aspect — layout, colors, typography, interactivity — without starting over. The agent reads existing files and makes targeted edits.
+
+### Model Resilience
+Automatic failover to fallback model on API errors. If the primary model is unavailable, the system retries with the backup — for both the main loop and subagents.
+
+### Session Persistence
+JSONL-based conversation storage survives server restarts. Restore any session with `?session={uuid}`. Workspace files (scripts, assets, output) persist on disk.
+
+</td>
+</tr>
+</table>
+
+### All Features
+
+| Feature | Description |
+|---|---|
+| **11 Agent Tools** | File ops (read/write/edit/list/grep), build, Unsplash search, plan, delegate, error reporting |
+| **4 Site Templates** | Landing page, portfolio, blog, dashboard — production-quality reference implementations |
+| **Self-Contained Output** | All HTML, CSS, JS, and assets inlined into one file. Zero external dependencies |
+| **Viewport Controls** | 375px mobile, 768px tablet, 1200px desktop presets + draggable resize handle + fullscreen |
+| **Todo Visualization** | Agent's plan rendered as interactive progress cards with checkboxes and completion stats |
+| **Unsplash Integration** | Agent searches real stock photos. Three-tier fallback: Unsplash → picsum → inline SVG placeholder |
+| **Knowledge Flywheel** | Gotchas, utils, and skills are agent-extensible. Every solved problem becomes reusable knowledge |
+| **BYO-Key Architecture** | API key stored in browser localStorage only. Never touches the server |
+| **Defense in Depth** | 4-layer path validation: `..` rejection → workspace boundary → path separator check → symlink resolution |
+| **Accessibility Baseline** | Semantic HTML, ARIA, keyboard nav, color contrast, skip-to-content link — auto-enforced by packager |
+
+---
+
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -123,103 +159,61 @@ npm run dev
 | Language | TypeScript 5.4 |
 | Styling | Tailwind CSS 3.4 |
 | Agent SDK | DeepSeek API (OpenAI-compatible) |
-| Output | Single HTML file (inlined CSS + JS + base64 assets) |
+| Output Format | Single HTML file (inlined CSS + JS + base64 assets) |
 | Sandbox | iframe `allow-scripts` |
 | Persistence | JSONL files + in-memory Map |
-
-### Agent Tool Registry (11 tools)
-
-| Tool | Purpose |
-|---|---|
-| `read_file` | Read files (2K-line default) |
-| `write_file` | Write files (overwrite-protected) |
-| `edit_file` | Unique-match text replacement |
-| `list_directory` | List with deterministic format |
-| `grep_file` | ripgrep search (JS fallback) |
-| `build_website` | Package HTML/CSS/JS → single Site |
-| `search_unsplash` | Stock photo search (picsum fallback) |
-| `load_skills` | Discover workspace skills |
-| `write_todo` | JSON tasks → checklist |
-| `set_error` | Report unrecoverable errors |
-| `delegate_subagent` | Spawn research subagents (max 3) |
+| Testing | Vitest |
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 ai-web/
 ├── app/                          # Next.js pages + API routes
-│   ├── page.tsx                  # Dynamic import entry (SSR disabled)
-│   ├── HomeContent.tsx           # Split-panel layout + state management
-│   ├── layout.tsx                # Root layout
 │   └── api/
 │       ├── chat/route.ts         # Agent chat (POST, SSE streaming)
-│       ├── build/route.ts        # Manual build (POST)
-│       ├── preview/[id]/route.ts # Site preview (GET, iframe source)
-│       └── session/[id]/route.ts # Session history (GET, JSONL reader)
+│       ├── build/route.ts        # Manual build trigger
+│       ├── preview/[id]/route.ts # Site preview serving
+│       └── session/[id]/route.ts # Session restore
 ├── components/                   # React components
-│   ├── ChatPanel.tsx             # Chat panel + Markdown + TodoCard
+│   ├── ChatPanel.tsx             # Chat + Markdown + TodoCard
 │   ├── WebsitePreview.tsx        # Sandbox iframe + viewport controls
 │   ├── SettingsModal.tsx         # API key configuration
 │   └── ErrorConsole.tsx          # Runtime error display
-├── lib/                          # Core libraries
+├── lib/
 │   ├── agent/                    # Agent SDK (factory + DeepSeek adapter)
-│   │   ├── types.ts              # Type definitions + StreamEvent
-│   │   ├── tools.ts              # 11 tool definitions + handlers
-│   │   ├── factory.ts            # Provider factory
-│   │   ├── deepseek.ts           # DeepSeek agent (fallback-aware)
-│   │   └── index.ts              # Barrel export
-│   ├── build/packager.ts         # HTML/CSS/JS + assets → single Site
+│   ├── build/packager.ts         # Scripts + assets → single Site
 │   ├── workspace/manager.ts      # Session isolation + scaffold copy
-│   ├── scaffold/reader.ts        # Scaffold document loader
 │   └── session-store.ts          # JSONL persistence
 ├── workspace/                    # Scaffold knowledge base
-│   ├── agent.md                  # Agent system instructions
 │   ├── docs/                     # 6 web development guides
-│   │   ├── responsive-design.md
-│   │   ├── design-patterns.md
-│   │   ├── accessibility.md
-│   │   ├── seo-performance.md
-│   │   ├── interactive-ui.md
-│   │   └── gotchas.md
 │   ├── templates/                # 4 website templates
-│   │   ├── landing-page/
-│   │   ├── portfolio/
-│   │   ├── blog/
-│   │   └── dashboard/
-│   ├── lib/
-│   │   ├── utils.js              # 12 reusable web utilities
-│   │   └── index.md              # API reference
-│   └── skills/                   # Extensible skill system
+│   ├── lib/utils.js              # 12 reusable web utilities
+│   └── agent.md                  # Agent system instructions
 ├── user_space/                   # Runtime sessions (gitignored)
-├── __tests__/                    # Vitest tests
-├── docs/                         # Project documentation
-│   ├── adr/                      # Architecture Decision Records
-│   └── superpowers/              # Specs and plans
-├── CONTEXT.md                    # Domain context glossary
-├── AGENTS.md                     # Agent operating instructions
-└── DEVELOPMENT.md                # Developer gotchas
+├── assets/                       # GitHub Pages landing page
+└── docs/                         # Specs, ADRs, implementation plans
 ```
 
 ---
 
-## 🎯 Design Philosophy
+## Design Philosophy
 
 | Principle | Practice |
 |---|---|
-| **Scaffold-First** | Agent reads authoritative docs + gotchas + templates before generating code |
-| **Knowledge Flywheel** | Gotchas, utils, and skills are agent-extensible — every solved problem becomes reusable knowledge |
-| **Single File Output** | All HTML/CSS/JS inlined into one self-contained file. No build tooling, no CDN deps |
-| **BYO-Key** | No server-side key storage — API key lives only in browser localStorage |
-| **Defense in Depth** | Four-layer path validation: `..` rejection → `user_space/` check → boundary check → symlink resolution |
-| **Model Resilience** | Automatic failover to fallback model on API errors — main loop and subagents |
-| **Mobile-First** | All generated Sites use mobile-first CSS (breakpoints: 640, 768, 1024, 1280) |
-| **Accessibility Baseline** | Semantic HTML, ARIA, keyboard nav, skip-to-content — enforced by scaffold |
+| Scaffold-First | Agent reads docs + gotchas + templates before generating code |
+| Packager Owns Document Shell | Agent writes body content. Packager wraps with DOCTYPE, meta, skip-link, error handler |
+| Single File Output | All HTML/CSS/JS inlined. No frameworks, no CDN dependencies |
+| BYO-Key | No server-side key storage. API key lives in browser localStorage |
+| Model Resilience | Automatic failover to fallback model on API errors |
+| Mobile-First | Generated Sites use mobile-first CSS (breakpoints: 640, 768, 1024, 1280) |
+| Accessibility by Default | Semantic HTML, ARIA, keyboard nav, contrast — enforced by scaffold, not optional |
+| Knowledge Flywheel | Agent-extensible gotchas, utils, and skills — every session improves the scaffold |
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 | Document | Purpose |
 |---|---|
@@ -232,24 +226,22 @@ ai-web/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-1. Read [CONTEXT.md](./CONTEXT.md) — understand the domain model
-2. Read [DEVELOPMENT.md](./DEVELOPMENT.md) — developer gotchas and conventions
-3. Extend the scaffold — add new templates, gotchas, or skills under `workspace/`
-4. Add a new LLM provider — implement `AgentSession` interface (see `lib/agent/deepseek.ts`)
+1. Read [CONTEXT.md](./CONTEXT.md) — domain language and concepts
+2. Read [DEVELOPMENT.md](./DEVELOPMENT.md) — gotchas and conventions
+3. Extend the scaffold — add templates, gotchas, or skills under `workspace/`
+4. Add a new LLM provider — implement `AgentSession` interface
 5. Add a new tool — define + register in `lib/agent/tools.ts`
-
-**21 gotchas documented** — covering layout, typography, interactivity, images, CSS, performance, and mobile.
 
 ---
 
-## 📄 License
+## License
 
 MIT © 2024 AI Web Studio
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ using <a href="https://nextjs.org">Next.js</a> · <a href="https://platform.deepseek.com">DeepSeek</a> · <a href="https://tailwindcss.com">Tailwind CSS</a></sub>
+  <sub>Built with Next.js · DeepSeek · Tailwind CSS</sub>
 </p>
