@@ -343,7 +343,7 @@ export async function POST(request: Request) {
           gotchaSection +
           '\n\n--- Final Instructions ---\n' +
           finalInstructions +
-          '\n\n[Game development guide truncated for length — read workspace/docs/ for full content if needed.]';
+          '\n\n[Web development guide truncated for length — read workspace/docs/ for full content if needed.]';
       }
 
       const agentMdPath = path.join(process.cwd(), 'workspace', 'agent.md');

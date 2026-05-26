@@ -29,23 +29,23 @@ interface Props {
   messages: ChatMessage[];
   onSend: (message: string) => void;
   onOpenSettings: () => void;
-  onNewGame: () => void;
+  onNewSession: () => void;
   isGenerating: boolean;
   sessionId: string;
   todoUpdate?: TodoUpdate | null;
 }
 
 const examplePrompts = [
-  'Make a snake game',
-  'Create a space shooter',
-  'Build a puzzle game',
+  'Build a SaaS landing page',
+  'Create a portfolio site',
+  'Design a blog layout',
 ];
 
 export default function ChatPanel({
   messages,
   onSend,
   onOpenSettings,
-  onNewGame,
+  onNewSession,
   isGenerating,
   sessionId,
   todoUpdate,
@@ -311,181 +311,31 @@ export default function ChatPanel({
             GS
           </div>
           <h1 className="text-sm font-semibold text-panel-text tracking-tight">
-            AI Game Studio
+            AI Web Studio
           </h1>
         </div>
 
         <div className="flex items-center gap-1">
           <button
-            onClick={onNewGame}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-panel-muted hover:text-panel-text hover:bg-white/5 rounded transition-colors"
-            aria-label="Start a new game session"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            New Game
-          </button>
-          <button
-            onClick={onOpenSettings}
-            className="p-1.5 text-panel-muted hover:text-panel-text hover:bg-white/5 rounded transition-colors"
-            aria-label="Open settings"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
-
-      {sessionId && (
-        <SessionBar sessionId={sessionId} />
-      )}
-
-      {/* Persistent Game Plan — updates on every write_todo/edit_file */}
-      {todoUpdate && (
-        <div className="px-4 pt-3">
-          <TodoCard update={todoUpdate} />
-        </div>
-      )}
-
-      {/* Messages — aria-live region for screen reader announcements */}
-      <div
-        ref={listRef}
-        className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-        role="log"
-        aria-live="polite"
-        aria-label="Chat messages"
-      >
-        {messages.length === 0 ? (
-          /* Empty state */
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="w-16 h-16 rounded-full bg-panel-surface border border-panel-border flex items-center justify-center mb-4">
-              <svg
-                className="w-8 h-8 text-panel-muted"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
+                onClick={onNewSession}
+                className="px-2.5 py-1.5 text-xs font-medium text-panel-muted hover:text-panel-text hover:bg-white/5 rounded-md transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10"
+                aria-label="Start a new session"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
-                />
-              </svg>
-            </div>
-            <p className="text-sm text-panel-text mb-1">What would you like to create?</p>
-            <p className="text-xs text-panel-muted mb-4">
-              Describe a game and I&apos;ll build it for you
-            </p>
-
-            <div className="space-y-2 w-full max-w-[240px]">
-              {examplePrompts.map((prompt) => (
-                <button
-                  key={prompt}
-                  onClick={() => onSend(prompt)}
-                  disabled={isGenerating}
-                  className="w-full text-left px-3 py-2 rounded border border-panel-border bg-panel-surface/50 text-xs text-panel-muted hover:text-panel-text hover:border-panel-accent/30 hover:bg-panel-surface transition-all"
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-            messages.map((msg, i) => (
-            <div key={i} className="animate-message-in">
-              {msg.role === 'user' ? (
-                /* User bubble */
-                <div className="flex justify-end">
-                  <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-br-md bg-panel-accent text-white text-sm leading-relaxed">
-                    {msg.content}
-                  </div>
-                </div>
-              ) : (
-                /* Agent message */
-                <div className="flex justify-start">
-                  {msg.content.startsWith('Network error:') || msg.content.startsWith('Could not') ? (
-                    /* Error message — visually distinct */
-                    <div className="max-w-[92%] px-4 py-2.5 rounded-2xl rounded-bl-md bg-red-950/60 border border-red-500/20 text-red-200 text-sm leading-relaxed">
-                      <div className="flex items-start gap-2">
-                        <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
-                        <div>
-                          {renderContent(msg.content)}
-                          <p className="mt-1 text-xs text-red-400/70">
-                            You can try sending your message again, or start a new game session.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                  <div className="max-w-[92%] px-4 py-2.5 rounded-2xl rounded-bl-md bg-panel-surface text-panel-text text-sm leading-relaxed">
-                    {renderContent(msg.content)}
-
-                    {/* Reasoning / thinking content — auto-expand */}
-                    {msg.reasoningContent && (
-                      <ReasoningBlock content={msg.reasoningContent} />
-                    )}
-
-                    {/* Tool calls */}
-                    {msg.toolCalls && msg.toolCalls.length > 0 && (
-                      <div className="mt-3 space-y-1.5">
-                        {msg.toolCalls.map((tc, j) => (
-                          <ToolCallCard key={j} call={tc} />
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Build success */}
-                    {msg.buildResult && (
-                      <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs animate-pulse">
-                        🎮 Game ready! Play on the right →
-                      </div>
-                    )}
-
-                    {/* GitHub push success */}
-                    {msg.githubPushResult && msg.githubPagesUrl && (
-                      <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs">
-                        🌐 Published to{' '}
-                        <a
-                          href={msg.githubPagesUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline hover:text-purple-300"
-                        >
-                          GitHub Pages
-                        </a>
-                      </div>
-                    )}
-                    {msg.githubPushResult !== undefined && !msg.githubPushResult && (
-                      <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
-                        ❌ GitHub push failed. Check your token in Settings.
-                      </div>
-                    )}
-                  </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))
-        )}
-
-        {/* Loading indicator */}
-        {isGenerating && (
-          <div className="flex justify-start">
-            <div className="px-4 py-3 rounded-2xl rounded-bl-md bg-panel-surface">
-              <div className="flex items-center gap-2 text-sm text-panel-muted">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="inline-flex">
-                  Generating your game
-                  <span className="inline-flex overflow-hidden ml-0.5">
-                    <span className="animate-[bounce_1.4s_infinite_.0s]">.</span>
-                    <span className="animate-[bounce_1.4s_infinite_.2s]">.</span>
-                    <span className="animate-[bounce_1.4s_infinite_.4s]">.</span>
-                  </span>
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">
+                  New Session
                 </span>
-              </div>
+              </button>
+              <button
+                onClick={onOpenSettings}
+                className="px-2.5 py-1.5 text-xs font-medium text-panel-muted hover:text-panel-text hover:bg-white/5 rounded-md transition-all"
+                aria-label="Open settings"
+              >
+                <Settings className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline ml-1">Settings</span>
+              </button>
             </div>
-          </div>
-        )}
-      </div>
+          </header>
 
       {/* Input */}
       <div className="shrink-0 border-t border-panel-border px-4 py-3">
@@ -496,7 +346,7 @@ export default function ChatPanel({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Describe the game you want to create..."
+              placeholder="Describe the site you want to create..."
               rows={1}
               disabled={isGenerating}
               className="w-full resize-none bg-panel-surface border border-panel-border rounded-xl px-4 py-2.5 pr-11 text-sm text-panel-text placeholder:text-panel-muted/60 focus:outline-none focus:ring-2 focus:ring-panel-accent/30 focus:border-panel-accent transition-shadow disabled:opacity-40"
@@ -653,7 +503,7 @@ function TodoCard({ update }: { update: { tasks: Array<{ task: string; status: '
   return (
     <div className="mt-3 rounded-lg bg-panel-bg-deep border border-white/5 overflow-hidden">
       <div className="px-3 py-2 flex items-center gap-2 border-b border-white/5">
-        <span className="text-xs font-semibold text-panel-text">Game Plan</span>
+        <span className="text-xs font-semibold text-panel-text">Site Plan</span>
         <span className="text-[11px] text-panel-muted ml-auto">
           {update.done}/{total} done
         </span>

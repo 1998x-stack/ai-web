@@ -54,7 +54,7 @@ const readFileDef: ToolDefinition = {
 
 const writeFileDef: ToolDefinition = {
   name: 'write_file',
-  description: 'Write or overwrite a file within the user space. Creates parent directories if they do not exist. By default, refuses to overwrite existing files — set overwrite: true to force. Use edit_file to modify existing files instead of overwriting them entirely. Do NOT use this to write build outputs (use build_game), todo lists (use write_todo), or generated assets that would bloat the workspace.',
+  description: 'Write or overwrite a file within the user space. Creates parent directories if they do not exist. By default, refuses to overwrite existing files — set overwrite: true to force. Use edit_file to modify existing files instead of overwriting them entirely. Do NOT use this to write build outputs (use build_website), todo lists (use write_todo), or generated assets that would bloat the workspace.',
   parameters: {
     type: 'object',
     properties: {
@@ -97,7 +97,7 @@ const listDirDef: ToolDefinition = {
 
 const loadSkillsDef: ToolDefinition = {
   name: 'load_skills',
-  description: 'Load metadata for all available skills in skills/examples/ plus the built-in skill-creator skill. Returns JSON with name, description, and trigger keywords for each skill. Call this at the start of every game generation session to discover relevant domain skills. Do NOT call this repeatedly — skills do not change during a session.',
+  description: 'Load metadata for all available skills in skills/examples/ plus the built-in skill-creator skill. Returns JSON with name, description, and trigger keywords for each skill. Call this at the start of every site generation session to discover relevant domain skills. Do NOT call this repeatedly — skills do not change during a session.',
   parameters: { type: 'object', properties: {}, required: [], additionalProperties: false },
 };
 
@@ -108,7 +108,7 @@ const grepFileDef: ToolDefinition = {
     type: 'object',
     properties: {
       path: { type: 'string', description: 'File or directory to search (must be within workspace root)' },
-      pattern: { type: 'string', description: 'Regular expression pattern (ripgrep syntax). Examples: "export function clamp", "class GameLoop", "canvas\\.width"' },
+      pattern: { type: 'string', description: 'Regular expression pattern (ripgrep syntax). Examples: "export function clamp", "document\.querySelector", "flex-direction"' },
       context: { type: 'number', description: 'Number of context lines to show before and after each match (default: 0)' },
     },
     required: ['path', 'pattern'],
@@ -118,7 +118,7 @@ const grepFileDef: ToolDefinition = {
 
 const writeTodoDef: ToolDefinition = {
   name: 'write_todo',
-  description: 'Write or update a game design plan to todo.md. Provide a JSON array of atomic, independently runnable tasks. Each task must have: task (description), status ("pending" or "done"), and verify (how to confirm completion — e.g., "Game compiles and snake moves with arrow keys"). Write todo.md at game start, then use edit_file to toggle "- [ ]" to "- [x]" as you complete tasks. Keep tasks small and concrete.',
+  description: 'Write or update a site design plan to todo.md. Provide a JSON array of atomic, independently runnable tasks. Each task must have: task (description), status ("pending" or "done"), and verify (how to confirm completion — e.g., "Site builds and renders correctly"). Write todo.md at start, then use edit_file to toggle "- [ ]" to "- [x]" as you complete tasks. Keep tasks small and concrete.',
   parameters: {
     type: 'object',
     properties: {
@@ -129,7 +129,7 @@ const writeTodoDef: ToolDefinition = {
           properties: {
             task: { type: 'string', description: 'Task description (atomic, concrete action)' },
             status: { type: 'string', enum: ['pending', 'done'], description: 'Task status' },
-            verify: { type: 'string', description: 'How to verify this task is complete (e.g., "Game compiles and snake moves with arrow keys")' },
+            verify: { type: 'string', description: 'How to verify this task is complete (e.g., "Site builds and renders correctly")' },
           },
           required: ['task', 'status', 'verify'],
         },
@@ -149,11 +149,11 @@ const setErrorDef: ToolDefinition = {
 
 const delegateSubagentDef: ToolDefinition = {
   name: 'delegate_subagent',
-  description: 'Delegate a LOW SIGNAL-TO-NOISE task to a subagent (max 3 active). Low SNR tasks are those requiring many tool calls but little high-level judgment: reading multiple documentation files, searching for code patterns, gathering context from the workspace. The subagent handles the grunt work and returns a concise summary. Subagents CANNOT build games, write todos, or delegate further. Do NOT delegate high-judgment tasks (game design, code architecture, user-facing decisions) — handle those yourself. Do NOT delegate single read_file calls — just call read_file directly.',
+  description: 'Delegate a LOW SIGNAL-TO-NOISE task to a subagent (max 3 active). Low SNR tasks are those requiring many tool calls but little high-level judgment: reading multiple documentation files, searching for code patterns, gathering context from the workspace. The subagent handles the grunt work and returns a concise summary. Subagents CANNOT build websites, write todos, or delegate further. Do NOT delegate high-judgment tasks (site design, code architecture, user-facing decisions) — handle those yourself. Do NOT delegate single read_file calls — just call read_file directly.',
   parameters: {
     type: 'object',
     properties: {
-      instruction: { type: 'string', description: 'Concise research instruction. Be specific about what to find and where. Example: "Read docs/gotchas.md, docs/game-dev-guide.md, and templates/snake/game.js. Summarize: (1) key gotchas to avoid, (2) game loop pattern used in snake, (3) recommended canvas setup approach."' },
+      instruction: { type: 'string', description: 'Concise research instruction. Be specific about what to find and where. Example: "Read docs/responsive-design.md, docs/gotchas.md, and templates/landing-page/index.html. Summarize: (1) key gotchas to avoid, (2) layout pattern used in landing page, (3) recommended responsive layout approach."' },
     },
     required: ['instruction'],
     additionalProperties: false,
@@ -194,11 +194,11 @@ const gitStatusDef: ToolDefinition = {
 
 const githubPushDef: ToolDefinition = {
   name: 'github_push',
-  description: 'Push the built game to a new GitHub repository and enable GitHub Pages for instant sharing. Requires the user to have configured a GitHub token in Settings. Creates a public repo with the built output/index.html, enables Pages, and returns the live URL. Call AFTER a successful build_game. The repo is named automatically (ai-game-{timestamp}) unless you specify a name. IMPORTANT: Only call this when the user asks you to share or publish their game.',
+  description: 'Push the built site to a new GitHub repository and enable GitHub Pages for instant sharing. Requires the user to have configured a GitHub token in Settings. Creates a public repo with the built output/index.html, enables Pages, and returns the live URL. Call AFTER a successful build_website. The repo is named automatically (ai-web-{timestamp}) unless you specify a name. IMPORTANT: Only call this when the user asks you to share or publish their site.',
   parameters: {
     type: 'object',
     properties: {
-      repoName: { type: 'string', description: 'Custom repository name (optional). Default: ai-game-{timestamp}. Use lowercase, hyphens, no spaces.' },
+      repoName: { type: 'string', description: 'Custom repository name (optional). Default: ai-web-{timestamp}. Use lowercase, hyphens, no spaces.' },
       private: { type: 'boolean', description: 'Make the repository private (default: false)' },
     },
     required: [],
@@ -388,7 +388,7 @@ async function writeTodoHandler(args: Record<string, unknown>, root: string) {
     const verifyNote = t.verify ? ` — verify: ${t.verify}` : '';
     return `- ${checkbox} ${t.task}${verifyNote}`;
   });
-  const content = `# Game Plan\n\n${lines.join('\n')}\n`;
+  const content = `# Site Plan\n\n${lines.join('\n')}\n`;
 
   fs.writeFileSync(path.join(root, 'todo.md'), content, 'utf-8');
 
@@ -527,7 +527,7 @@ const SUBAGENT_SYSTEM_PROMPT =
   '\n' +
   'RULES:\n' +
   '- Never re-read files you already have content from.\n' +
-  '- Never create games, build games, modify todos, or delegate subagents.\n' +
+  '- Never create sites, build websites, modify todos, or delegate subagents.\n' +
   '- Never make design decisions — just report facts.\n' +
   '\n' +
   'OUTPUT FORMAT — wrap every response in:\n' +
@@ -687,9 +687,9 @@ async function githubPushHandler(args: Record<string, unknown>, root: string, co
   const result = await githubPush(root, token, repoName, isPrivate);
 
   if (result.success) {
-    return `GITHUB PUSH SUCCESS.\nRepository: ${result.repoUrl}\nGitHub Pages: ${result.pagesUrl}\n\nThe game is now live and shareable!`;
+    return `GITHUB PUSH SUCCESS.\nRepository: ${result.repoUrl}\nGitHub Pages: ${result.pagesUrl}\n\nThe site is now live and shareable!`;
   }
-  return `GITHUB PUSH FAILED: ${result.error}\n\nCheck that:\n1. The GitHub token has "repo" scope enabled\n2. A game has been built (run build_game first)\n3. The repository name is available`;
+  return `GITHUB PUSH FAILED: ${result.error}\n\nCheck that:\n1. The GitHub token has "repo" scope enabled\n2. A site has been built (run build_website first)\n3. The repository name is available`;
 }
 
 async function handleBuildWebsite(

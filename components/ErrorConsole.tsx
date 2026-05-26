@@ -3,20 +3,20 @@
 import { useState, useEffect } from 'react';
 import { AlertCircle, ChevronUp, ChevronDown } from 'lucide-react';
 
-export interface GameError {
+export interface SiteError {
   message: string;
   source: string;
   lineno: number;
   colno: number;
 }
 
-interface EnrichedError extends GameError {
+interface EnrichedError extends SiteError {
   id: number;
   timestamp: number;
 }
 
 interface Props {
-  errors: GameError[];
+  errors: SiteError[];
   onClear: () => void;
 }
 

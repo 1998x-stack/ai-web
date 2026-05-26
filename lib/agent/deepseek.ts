@@ -190,7 +190,7 @@ export class DeepSeekAgent implements AgentSession {
         break;
       }
 
-      // Pass cancellation signal to long-running tools (delegate_subagent, game_runtime)
+      // Pass cancellation signal to long-running tools (delegate_subagent)
       if (signal) this.config.signal = signal;
 
       const toolResults = await this.executeToolCalls(

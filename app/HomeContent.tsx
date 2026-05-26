@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import SettingsModal, { type AppSettings } from '@/components/SettingsModal';
-import ErrorConsole, { type GameError } from '@/components/ErrorConsole';
+import ErrorConsole, { type SiteError } from '@/components/ErrorConsole';
 import ChatPanel, { type ChatMessage, type TodoUpdate } from '@/components/ChatPanel';
 import WebsitePreview from '@/components/WebsitePreview';
 import { Loader2 } from 'lucide-react';
@@ -37,7 +37,7 @@ export default function HomeContent() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [siteUrl, setSiteUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [errors, setErrors] = useState<GameError[]>([]);
+  const [errors, setErrors] = useState<SiteError[]>([]);
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
   const [showSettings, setShowSettings] = useState(false);
   const [leftWidth, setLeftWidth] = useState(40);
@@ -310,7 +310,7 @@ export default function HomeContent() {
     setSettings(s);
   }, []);
 
-  const handleGameError = useCallback((err: GameError) => {
+  const handleSiteError = useCallback((err: SiteError) => {
     setErrors((prev) => [...prev.slice(-49), err]);
   }, []);
 
@@ -421,7 +421,7 @@ export default function HomeContent() {
           messages={messages}
           onSend={handleSendMessage}
           onOpenSettings={() => setShowSettings(true)}
-          onNewGame={handleNewSession}
+          onNewSession={handleNewSession}
           isGenerating={isGenerating}
           sessionId={sessionId}
           todoUpdate={todoUpdate}
@@ -448,7 +448,7 @@ export default function HomeContent() {
           <WebsitePreview
             siteUrl={siteUrl}
             errors={errors}
-            onError={handleGameError}
+            onError={handleSiteError}
           />
         </div>
 
