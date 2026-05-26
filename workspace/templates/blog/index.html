@@ -1,0 +1,250 @@
+<!-- Body content only — build pipeline wraps the shell -->
+<header class="site-header" role="banner">
+  <div class="container header__inner">
+    <a href="#" class="site-title">The Ledger</a>
+    <div class="header__right">
+      <nav class="header__nav" id="mainNav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="#" class="nav__link nav__link--active">Home</a></li>
+          <li><a href="#" class="nav__link">Articles</a></li>
+          <li><a href="#" class="nav__link">Topics</a></li>
+          <li><a href="#" class="nav__link">About</a></li>
+        </ul>
+      </nav>
+      <div class="header__search" role="search">
+        <label for="searchInput" class="sr-only">Search articles</label>
+        <input type="search" id="searchInput" class="search__input" placeholder="Search articles..." aria-label="Search">
+      </div>
+      <button class="header__hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <!-- Single Post View (hidden by default) -->
+  <article class="single-post" id="singlePost" aria-labelledby="post-title" hidden>
+    <div class="container single-post__inner">
+      <button class="single-post__back" id="postBackBtn" aria-label="Back to all articles">&larr; Back to articles</button>
+      <header class="single-post__header">
+        <div class="single-post__meta">
+          <span class="post__date" id="postDate">May 15, 2026</span>
+          <span class="post__tag post__tag--red" id="postCategory">Design</span>
+          <span class="post__read-time" id="postReadTime">8 min read</span>
+        </div>
+        <h1 id="post-title" class="single-post__title">The Art of Software Design: Building Systems That Last</h1>
+        <p class="single-post__excerpt" id="postExcerpt">Great software design is not about following trends. It is about understanding tradeoffs, embracing constraints, and building with intention.</p>
+      </header>
+      <div class="single-post__featured-image" aria-hidden="true">
+        <svg viewBox="0 0 800 400" fill="none"><rect width="800" height="400" fill="#f5ebe0"/><rect x="60" y="80" width="200" height="200" rx="8" fill="#e53e3e" opacity="0.15"/><circle cx="460" cy="180" r="80" fill="#e53e3e" opacity="0.1"/><rect x="580" y="60" width="160" height="40" rx="4" fill="#e53e3e" opacity="0.08"/><rect x="580" y="120" width="120" height="40" rx="4" fill="#e53e3e" opacity="0.06"/></svg>
+      </div>
+      <div class="single-post__content" id="postContent">
+        <p>Software design is a discipline of tradeoffs. Every decision we make as engineers comes with consequences, both intended and unforeseen. The mark of a senior engineer is not the ability to write clever code, but the wisdom to know which tradeoffs to accept.</p>
+        <h2>Start with the Why</h2>
+        <p>Before writing a single line of code, ask yourself: what problem are we solving? Too many projects fail because teams jump straight to implementation without a clear understanding of the domain.</p>
+        <blockquote>
+          <p>"The best code is the code you don't write. The second best is code that is so clear it feels like it was never written."</p>
+        </blockquote>
+        <p>Domain-driven design gives us a vocabulary for modeling complex business logic. By aligning our code structure with the mental models of domain experts, we create systems that are easier to reason about and evolve.</p>
+        <h2>The Power of Constraints</h2>
+        <p>Constraints are not limitations. They are creative fuel. When you have infinite options, you have no direction. When you impose constraints, you create a design space that drives toward elegance.</p>
+        <p>Some of the best software architectures emerged from severe constraints:</p>
+        <ul>
+          <li>Unix was built on machines with 64 KB of memory</li>
+          <li>SQLite fits in under 300 KB</li>
+          <li>The original Macintosh booted in under 10 seconds on an 8 MHz CPU</li>
+        </ul>
+        <p>Modern development has removed many of these constraints, but the principles remain. Set your own constraints. Limit your dependencies. Embrace simplicity.</p>
+        <h2>Building for Change</h2>
+        <p>The only constant in software is change. Requirements shift, technologies evolve, teams reorganize. The best defense against this uncertainty is modular design.</p>
+        <pre><code>// Good: depends on abstractions, not concretions
+class ReportService {
+  constructor(storage, formatter) {
+    this.storage = storage;
+    this.formatter = formatter;
+  }
+
+  async generateReport(id) {
+    const data = await this.storage.fetch(id);
+    return this.formatter.format(data);
+  }
+}</code></pre>
+        <p>Dependency injection, interfaces, and hexagonal architecture are not academic concepts. They are survival tools for long-lived codebases.</p>
+      </div>
+      <div class="single-post__footer">
+        <div class="single-post__tags" id="postTags">
+          <span class="post__tag post__tag--blue">Software Design</span>
+          <span class="post__tag post__tag--green">Architecture</span>
+          <span class="post__tag post__tag--yellow">Best Practices</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Blog Home (shown by default) -->
+  <div class="blog-home" id="blogHome">
+    <!-- Featured Post -->
+    <section class="featured section" aria-label="Featured post">
+      <div class="container">
+        <article class="featured__card">
+          <div class="featured__image" aria-hidden="true">
+            <svg viewBox="0 0 640 360" fill="none"><rect width="640" height="360" fill="#f5ebe0"/><rect x="40" y="40" width="160" height="160" rx="8" fill="#e53e3e" opacity="0.15"/><circle cx="400" cy="120" r="60" fill="#e53e3e" opacity="0.1"/><rect x="480" y="40" width="120" height="30" rx="4" fill="#e53e3e" opacity="0.08"/><rect x="480" y="86" width="90" height="30" rx="4" fill="#e53e3e" opacity="0.06"/></svg>
+          </div>
+          <div class="featured__body">
+            <div class="featured__meta">
+              <span class="post__tag post__tag--red">Design</span>
+              <span class="post__date">May 15, 2026</span>
+              <span class="post__read-time">8 min read</span>
+            </div>
+            <h2 class="featured__title">The Art of Software Design: Building Systems That Last</h2>
+            <p class="featured__excerpt">Great software design is not about following trends. It is about understanding tradeoffs, embracing constraints, and building with intention over the long haul.</p>
+            <button class="read-more-btn" data-post="software-design">Read Article</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Post List + Sidebar -->
+    <section class="posts-section section" aria-label="All articles">
+      <div class="container posts-layout">
+        <div class="posts-main">
+          <div class="posts__toolbar">
+            <h2 class="posts__heading">Latest Articles</h2>
+            <div class="posts__filters" id="categoryFilters" role="group" aria-label="Filter by category">
+              <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="design">Design</button>
+              <button class="filter-btn" data-filter="engineering">Engineering</button>
+              <button class="filter-btn" data-filter="career">Career</button>
+              <button class="filter-btn" data-filter="tutorial">Tutorial</button>
+            </div>
+          </div>
+          <div class="posts__grid" id="postsGrid">
+            <article class="post-card" data-category="engineering">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#f0fdf4"/><rect x="30" y="30" width="80" height="80" rx="6" fill="#10b981" opacity="0.15"/><rect x="130" y="30" width="200" height="12" rx="4" fill="#10b981" opacity="0.25"/><rect x="130" y="52" width="160" height="12" rx="4" fill="#10b981" opacity="0.15"/><rect x="130" y="74" width="180" height="12" rx="4" fill="#10b981" opacity="0.1"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--green">Engineering</span>
+                  <span class="post__date">May 12, 2026</span>
+                </div>
+                <h3 class="post-card__title">TypeScript Patterns for Large-Scale Applications</h3>
+                <p class="post-card__excerpt">How we structure TypeScript projects at scale, from folder conventions to advanced type-level patterns.</p>
+              </div>
+            </article>
+            <article class="post-card" data-category="design">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#fef2f2"/><circle cx="120" cy="80" r="40" fill="#e53e3e" opacity="0.1"/><rect x="200" y="40" width="140" height="14" rx="4" fill="#e53e3e" opacity="0.2"/><rect x="200" y="66" width="100" height="14" rx="4" fill="#e53e3e" opacity="0.12"/><rect x="200" y="92" width="120" height="10" rx="4" fill="#e53e3e" opacity="0.08"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--red">Design</span>
+                  <span class="post__date">May 10, 2026</span>
+                </div>
+                <h3 class="post-card__title">Designing for Accessibility Is Designing for Everyone</h3>
+                <p class="post-card__excerpt">Accessibility is not a feature toggle. It is a design philosophy that improves the experience for all users.</p>
+              </div>
+            </article>
+            <article class="post-card" data-category="career">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#fff7ed"/><rect x="40" y="40" width="80" height="40" rx="4" fill="#f97316" opacity="0.15"/><rect x="140" y="40" width="120" height="40" rx="4" fill="#f97316" opacity="0.1"/><rect x="40" y="98" width="280" height="8" rx="4" fill="#f97316" opacity="0.08"/><rect x="40" y="118" width="200" height="8" rx="4" fill="#f97316" opacity="0.06"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--yellow">Career</span>
+                  <span class="post__date">May 8, 2026</span>
+                </div>
+                <h3 class="post-card__title">Navigating the Staff Engineer Path</h3>
+                <p class="post-card__excerpt">What nobody tells you about the transition from senior to staff engineer, and how to navigate the ambiguity.</p>
+              </div>
+            </article>
+            <article class="post-card" data-category="tutorial">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#f0f9ff"/><rect x="40" y="30" width="200" height="120" rx="6" fill="#0ea5e9" opacity="0.1"/><circle cx="80" cy="70" r="12" fill="#0ea5e9" opacity="0.2"/><rect x="104" y="62" width="60" height="8" rx="4" fill="#0ea5e9" opacity="0.15"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--blue">Tutorial</span>
+                  <span class="post__date">May 5, 2026</span>
+                </div>
+                <h3 class="post-card__title">Building a CLI Tool in Rust: A Practical Guide</h3>
+                <p class="post-card__excerpt">Step by step walkthrough of building a production-ready CLI application with Rust, from project setup to distribution.</p>
+              </div>
+            </article>
+            <article class="post-card" data-category="engineering">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#f0fdf4"/><rect x="40" y="30" width="40" height="100" rx="4" fill="#10b981" opacity="0.12"/><rect x="92" y="30" width="40" height="140" rx="4" fill="#10b981" opacity="0.2"/><rect x="144" y="30" width="40" height="80" rx="4" fill="#10b981" opacity="0.12"/><rect x="196" y="30" width="40" height="160" rx="4" fill="#10b981" opacity="0.16"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--green">Engineering</span>
+                  <span class="post__date">May 3, 2026</span>
+                </div>
+                <h3 class="post-card__title">Database Migrations Done Right</h3>
+                <p class="post-card__excerpt">Lessons learned from a decade of schema migrations: what works, what breaks, and how to sleep at night.</p>
+              </div>
+            </article>
+            <article class="post-card" data-category="design">
+              <div class="post-card__image" aria-hidden="true">
+                <svg viewBox="0 0 400 220" fill="none"><rect width="400" height="220" fill="#fef2f2"/><circle cx="120" cy="100" r="50" fill="#e53e3e" opacity="0.08"/><rect x="200" y="60" width="160" height="12" rx="4" fill="#e53e3e" opacity="0.15"/><rect x="200" y="84" width="130" height="12" rx="4" fill="#e53e3e" opacity="0.1"/><rect x="200" y="108" width="100" height="8" rx="4" fill="#e53e3e" opacity="0.08"/></svg>
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span class="post__tag post__tag--red">Design</span>
+                  <span class="post__date">Apr 30, 2026</span>
+                </div>
+                <h3 class="post-card__title">Color Theory for Engineers</h3>
+                <p class="post-card__excerpt">A practical guide to understanding color, contrast, and visual hierarchy without a design degree.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" role="complementary" aria-label="Sidebar">
+          <div class="sidebar__widget">
+            <h3 class="sidebar__title">Categories</h3>
+            <ul class="sidebar__categories" id="sidebarCategories">
+              <li><button class="category-link category-link--active" data-filter="all">All <span class="category-count">6</span></button></li>
+              <li><button class="category-link" data-filter="design">Design <span class="category-count">2</span></button></li>
+              <li><button class="category-link" data-filter="engineering">Engineering <span class="category-count">2</span></button></li>
+              <li><button class="category-link" data-filter="career">Career <span class="category-count">1</span></button></li>
+              <li><button class="category-link" data-filter="tutorial">Tutorial <span class="category-count">1</span></button></li>
+            </ul>
+          </div>
+
+          <div class="sidebar__widget">
+            <h3 class="sidebar__title">Recent Posts</h3>
+            <ul class="sidebar__recent">
+              <li><a href="#" class="recent-link">TypeScript Patterns for Large-Scale Applications</a></li>
+              <li><a href="#" class="recent-link">Designing for Accessibility Is Designing for Everyone</a></li>
+              <li><a href="#" class="recent-link">Navigating the Staff Engineer Path</a></li>
+              <li><a href="#" class="recent-link">Building a CLI Tool in Rust</a></li>
+              <li><a href="#" class="recent-link">Database Migrations Done Right</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar__widget sidebar__widget--newsletter">
+            <h3 class="sidebar__title">Stay Updated</h3>
+            <p class="sidebar__desc">Get new posts delivered straight to your inbox. No spam, ever.</p>
+            <form class="sidebar__form" id="newsletterForm" novalidate>
+              <label for="newsletterEmail" class="sr-only">Email address</label>
+              <input type="email" id="newsletterEmail" name="email" class="sidebar__input" placeholder="you@example.com" required>
+              <button type="submit" class="sidebar__btn">Subscribe</button>
+            </form>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer__inner">
+    <p class="footer__copyright">&copy; 2026 The Ledger. All rights reserved.</p>
+    <p class="footer__tagline">Thoughts on software, design, and building things that matter.</p>
+  </div>
+</footer>

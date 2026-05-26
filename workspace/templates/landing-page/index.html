@@ -1,0 +1,277 @@
+<!-- Body content only — build pipeline wraps the shell -->
+<header class="site-header" role="banner">
+  <div class="header__inner container">
+    <a href="#" class="logo" aria-label="Homepage">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--color-primary)"/>
+        <path d="M10 22V10l12 6-12 6z" fill="#fff"/>
+      </svg>
+      <span class="logo__text">FlowBase</span>
+    </a>
+    <nav class="header__nav" id="mainNav" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#features" class="nav__link">Features</a></li>
+        <li><a href="#testimonials" class="nav__link">Testimonials</a></li>
+        <li><a href="#pricing" class="nav__link">Pricing</a></li>
+        <li><a href="#contact" class="nav__link">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+    <div class="header__actions">
+      <a href="#pricing" class="btn btn--ghost">Sign In</a>
+      <a href="#pricing" class="btn btn--primary">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <span class="hero__badge">Now in Public Beta</span>
+        <h1 class="hero__title">Ship products faster than ever.</h1>
+        <p class="hero__subtitle">FlowBase gives your team the platform to build, test, and deploy at lightspeed. No config, no delays, just results.</p>
+        <div class="hero__actions">
+          <a href="#pricing" class="btn btn--primary btn--lg">Start Free Trial</a>
+          <a href="#features" class="btn btn--secondary btn--lg">See How It Works</a>
+        </div>
+        <p class="hero__trust">Trusted by 2,000+ teams worldwide</p>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__placeholder">
+          <div class="placeholder__bar placeholder__bar--1"></div>
+          <div class="placeholder__bar placeholder__bar--2"></div>
+          <div class="placeholder__bar placeholder__bar--3"></div>
+          <div class="placeholder__bar placeholder__bar--4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features section" id="features" aria-labelledby="features-heading">
+    <div class="container">
+      <div class="section__header">
+        <h2 id="features-heading" class="section__title">Everything you need to ship</h2>
+        <p class="section__desc">Built for modern teams that move fast and break things (responsibly).</p>
+      </div>
+      <div class="features__grid">
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3 class="feature-card__title">Instant Deploy</h3>
+          <p class="feature-card__desc">Push your code and we handle the rest. Rollbacks are one-click, zero-downtime.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </div>
+          <h3 class="feature-card__title">Smart CI/CD</h3>
+          <p class="feature-card__desc">Automated pipelines that test, lint, and deploy. Catch issues before they reach production.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <h3 class="feature-card__title">Team Dashboards</h3>
+          <p class="feature-card__desc">Real-time metrics, logs, and alerts. Know the health of your entire stack at a glance.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="feature-card__title">Enterprise Security</h3>
+          <p class="feature-card__desc">SOC 2 compliant, end-to-end encrypted, with fine-grained access controls built in.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 class="feature-card__title">API First</h3>
+          <p class="feature-card__desc">REST and GraphQL APIs out of the box. Integrate with anything in your toolchain.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <h3 class="feature-card__title">Zero Config</h3>
+          <p class="feature-card__desc">No YAML, no DSL, no BS. Your code runs the moment you push. We infer the rest.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials section" id="testimonials" aria-labelledby="testimonials-heading">
+    <div class="container">
+      <div class="section__header">
+        <h2 id="testimonials-heading" class="section__title">Loved by teams of all sizes</h2>
+        <p class="section__desc">Hear from the people who ship with FlowBase every day.</p>
+      </div>
+      <div class="testimonials__grid">
+        <blockquote class="testimonial-card">
+          <div class="testimonial__stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="testimonial__text">"We cut our deployment time from 45 minutes to 90 seconds. FlowBase is a game changer for our infrastructure team."</p>
+          <footer class="testimonial__author">
+            <div class="testimonial__avatar" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#e2e8f0"/><circle cx="24" cy="18" r="6" fill="#94a3b8"/><path d="M12 38c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#94a3b8"/></svg>
+            </div>
+            <div>
+              <cite class="testimonial__name">Sarah Chen</cite>
+              <span class="testimonial__role">CTO, RelayPay</span>
+            </div>
+          </footer>
+        </blockquote>
+        <blockquote class="testimonial-card">
+          <div class="testimonial__stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="testimonial__text">"The zero-config setup meant we had our first deploy in under 10 minutes. Everything just works."</p>
+          <footer class="testimonial__author">
+            <div class="testimonial__avatar" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#e2e8f0"/><circle cx="24" cy="18" r="6" fill="#94a3b8"/><path d="M12 38c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#94a3b8"/></svg>
+            </div>
+            <div>
+              <cite class="testimonial__name">Marcus Rivera</cite>
+              <span class="testimonial__role">Lead Engineer, Dovetail</span>
+            </div>
+          </footer>
+        </blockquote>
+        <blockquote class="testimonial-card">
+          <div class="testimonial__stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="testimonial__text">"We scaled from 100 to 50,000 daily users without a single infrastructure change. That's the power of FlowBase."</p>
+          <footer class="testimonial__author">
+            <div class="testimonial__avatar" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#e2e8f0"/><circle cx="24" cy="18" r="6" fill="#94a3b8"/><path d="M12 38c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#94a3b8"/></svg>
+            </div>
+            <div>
+              <cite class="testimonial__name">Aisha Patel</cite>
+              <span class="testimonial__role">VP Product, Nimbus</span>
+            </div>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing section" id="pricing" aria-labelledby="pricing-heading">
+    <div class="container">
+      <div class="section__header">
+        <h2 id="pricing-heading" class="section__title">Simple, transparent pricing</h2>
+        <p class="section__desc">No hidden fees. No surprises. Scale as you grow.</p>
+      </div>
+      <div class="pricing__grid">
+        <article class="pricing-card">
+          <h3 class="pricing-card__name">Free</h3>
+          <p class="pricing-card__price"><span class="pricing__currency">$</span>0<span class="pricing__period">/mo</span></p>
+          <p class="pricing-card__desc">Perfect for side projects and prototypes.</p>
+          <ul class="pricing-card__features">
+            <li class="pricing-feature">3 projects</li>
+            <li class="pricing-feature">1 GB storage</li>
+            <li class="pricing-feature">Community support</li>
+            <li class="pricing-feature pricing-feature--disabled">Custom domains</li>
+            <li class="pricing-feature pricing-feature--disabled">Team members</li>
+          </ul>
+          <a href="#" class="btn btn--outline pricing-card__cta">Get Started</a>
+        </article>
+        <article class="pricing-card pricing-card--featured">
+          <span class="pricing-card__badge">Most Popular</span>
+          <h3 class="pricing-card__name">Pro</h3>
+          <p class="pricing-card__price"><span class="pricing__currency">$</span>29<span class="pricing__period">/mo</span></p>
+          <p class="pricing-card__desc">Ideal for growing teams and businesses.</p>
+          <ul class="pricing-card__features">
+            <li class="pricing-feature">Unlimited projects</li>
+            <li class="pricing-feature">50 GB storage</li>
+            <li class="pricing-feature">Priority support</li>
+            <li class="pricing-feature">Custom domains</li>
+            <li class="pricing-feature">10 team members</li>
+          </ul>
+          <a href="#" class="btn btn--primary pricing-card__cta">Start Free Trial</a>
+        </article>
+        <article class="pricing-card">
+          <h3 class="pricing-card__name">Enterprise</h3>
+          <p class="pricing-card__price"><span class="pricing__currency">$</span>99<span class="pricing__period">/mo</span></p>
+          <p class="pricing-card__desc">For organizations that need scale and control.</p>
+          <ul class="pricing-card__features">
+            <li class="pricing-feature">Everything in Pro</li>
+            <li class="pricing-feature">500 GB storage</li>
+            <li class="pricing-feature">24/7 dedicated support</li>
+            <li class="pricing-feature">SSO & SAML</li>
+            <li class="pricing-feature">Unlimited team members</li>
+          </ul>
+          <a href="#" class="btn btn--outline pricing-card__cta">Contact Sales</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / CTA -->
+  <section class="cta section" id="contact" aria-labelledby="cta-heading">
+    <div class="container">
+      <div class="cta__box">
+        <h2 id="cta-heading" class="cta__title">Ready to ship faster?</h2>
+        <p class="cta__desc">Join 2,000+ teams already using FlowBase. Start your free trial today.</p>
+        <form class="cta__form" id="ctaForm" novalidate>
+          <label for="ctaEmail" class="sr-only">Email address</label>
+          <input type="email" id="ctaEmail" name="email" class="cta__input" placeholder="you@company.com" required>
+          <button type="submit" class="btn btn--primary btn--lg cta__btn">Start Free Trial</button>
+        </form>
+        <p class="cta__footnote">No credit card required. 14-day free trial.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer__grid">
+    <div class="footer__col">
+      <h4 class="footer__heading">Product</h4>
+      <ul class="footer__links">
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Integrations</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__heading">Company</h4>
+      <ul class="footer__links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__heading">Resources</h4>
+      <ul class="footer__links">
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Status</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__heading">Legal</h4>
+      <ul class="footer__links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">GDPR</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p class="footer__copyright">&copy; 2026 FlowBase. All rights reserved.</p>
+    <div class="footer__social">
+      <a href="#" aria-label="Twitter">X</a>
+      <a href="#" aria-label="GitHub">GH</a>
+      <a href="#" aria-label="LinkedIn">LI</a>
+    </div>
+  </div>
+</footer>

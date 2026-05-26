@@ -1,0 +1,205 @@
+<!-- Body content only — build pipeline wraps the shell -->
+<header class="site-header" role="banner">
+  <div class="container header__inner">
+    <a href="#" class="logo">Aria.</a>
+    <nav class="header__nav" id="mainNav" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#about" class="nav__link">About</a></li>
+        <li><a href="#work" class="nav__link">Work</a></li>
+        <li><a href="#contact" class="nav__link">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </div>
+</header>
+
+<main id="main-content">
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <div class="container hero__inner">
+      <p class="hero__greeting">Hi, I'm</p>
+      <h1 class="hero__name">Aria Vasquez</h1>
+      <p class="hero__role">Design Engineer & Creative Technologist</p>
+      <p class="hero__bio">I craft digital experiences that live at the intersection of design and engineering. Currently building tools that help creatives ship their best work.</p>
+      <div class="hero__social">
+        <a href="#" class="social-link" aria-label="GitHub">GitHub</a>
+        <a href="#" class="social-link" aria-label="Dribbble">Dribbble</a>
+        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" class="social-link" aria-label="Mastodon">Mastodon</a>
+      </div>
+      <a href="#work" class="hero__cta">
+        See my work
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10m0 0l4-4m-4 4l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about section" id="about" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__content">
+          <h2 id="about-heading" class="section__title about__title">About Me</h2>
+          <p class="about__text">With over a decade of experience in product design and frontend engineering, I've had the privilege of working with startups, agencies, and Fortune 500 companies to ship products that people love.</p>
+          <p class="about__text">My approach blends rigorous design thinking with deep technical craft. I believe the best products emerge when designers understand code and engineers embrace design.</p>
+          <p class="about__text">Currently based in Brooklyn, NY — available for freelance and full-time opportunities.</p>
+          <div class="about__skills">
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Motion Design</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">Rust</span>
+            <span class="skill-tag">WebGL</span>
+            <span class="skill-tag">UX Research</span>
+          </div>
+        </div>
+        <div class="about__visual" aria-hidden="true">
+          <div class="about__avatar-placeholder">
+            <svg viewBox="0 0 320 380" fill="none">
+              <rect width="320" height="380" rx="16" fill="#e2e8f0"/>
+              <circle cx="160" cy="140" r="56" fill="#cbd5e1"/>
+              <path d="M60 320c0-55.228 44.772-100 100-100s100 44.772 100 100" fill="#cbd5e1"/>
+            </svg>
+            <span class="about__avatar-label">Aria Vasquez</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="work section" id="work" aria-labelledby="work-heading">
+    <div class="container">
+      <div class="section__header">
+        <h2 id="work-heading" class="section__title">Selected Work</h2>
+        <p class="section__desc">Projects that I'm proud to have been part of — each one taught me something new.</p>
+      </div>
+      <div class="work__grid">
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#ede9fe"/><rect x="32" y="40" width="120" height="40" rx="4" fill="#a78bfa" opacity="0.4"/><circle cx="56" cy="140" r="12" fill="#a78bfa" opacity="0.3"/><rect x="80" y="130" width="160" height="8" rx="4" fill="#a78bfa" opacity="0.3"/><rect x="80" y="150" width="120" height="8" rx="4" fill="#a78bfa" opacity="0.2"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">Prism Studio</h3>
+            <p class="work-card__desc">A collaborative design tool that bridges the gap between designers and developers with real-time code generation.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">React</span>
+              <span class="work-tag">WebSocket</span>
+              <span class="work-tag">Canvas</span>
+            </div>
+          </div>
+        </article>
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#fef3c7"/><rect x="32" y="40" width="200" height="24" rx="4" fill="#f59e0b" opacity="0.3"/><rect x="32" y="76" width="160" height="24" rx="4" fill="#f59e0b" opacity="0.2"/><rect x="32" y="112" width="180" height="24" rx="4" fill="#f59e0b" opacity="0.15"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">Pulse Analytics</h3>
+            <p class="work-card__desc">Real-time analytics dashboard processing millions of events per minute with sub-second query latency.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">TypeScript</span>
+              <span class="work-tag">D3</span>
+              <span class="work-tag">WebAssembly</span>
+            </div>
+          </div>
+        </article>
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#d1fae5"/><circle cx="200" cy="80" r="40" fill="#10b981" opacity="0.2"/><circle cx="200" cy="80" r="20" fill="#10b981" opacity="0.3"/><rect x="120" y="140" width="160" height="8" rx="4" fill="#10b981" opacity="0.25"/><rect x="140" y="160" width="120" height="8" rx="4" fill="#10b981" opacity="0.15"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">EcoTrack</h3>
+            <p class="work-card__desc">Sustainability management platform helping enterprises measure and reduce their carbon footprint across operations.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">Next.js</span>
+              <span class="work-tag">Python</span>
+              <span class="work-tag">PostgreSQL</span>
+            </div>
+          </div>
+        </article>
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#fce7f3"/><rect x="40" y="50" width="320" height="60" rx="8" fill="#ec4899" opacity="0.15"/><rect x="60" y="70" width="100" height="20" rx="4" fill="#ec4899" opacity="0.25"/><rect x="180" y="70" width="140" height="20" rx="4" fill="#ec4899" opacity="0.15"/><rect x="60" y="140" width="280" height="8" rx="4" fill="#ec4899" opacity="0.15"/><rect x="60" y="158" width="240" height="8" rx="4" fill="#ec4899" opacity="0.1"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">Verve Mobile</h3>
+            <p class="work-card__desc">A wellness app that combines behavioral science with delightful micro-interactions to build lasting habits.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">React Native</span>
+              <span class="work-tag">Reanimated</span>
+              <span class="work-tag">Firebase</span>
+            </div>
+          </div>
+        </article>
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#e0e7ff"/><rect x="40" y="40" width="200" height="160" rx="8" fill="#6366f1" opacity="0.12"/><rect x="260" y="40" width="100" height="40" rx="4" fill="#6366f1" opacity="0.2"/><rect x="260" y="92" width="100" height="40" rx="4" fill="#6366f1" opacity="0.12"/><rect x="260" y="144" width="100" height="40" rx="4" fill="#6366f1" opacity="0.08"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">Blockvault</h3>
+            <p class="work-card__desc">Enterprise password manager with zero-knowledge architecture and seamless team collaboration features.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">Rust</span>
+              <span class="work-tag">TypeScript</span>
+              <span class="work-tag">WebAuthn</span>
+            </div>
+          </div>
+        </article>
+        <article class="work-card">
+          <div class="work-card__image" aria-hidden="true">
+            <svg viewBox="0 0 400 240" fill="none"><rect width="400" height="240" rx="8" fill="#f5f5dc"/><rect x="50" y="60" width="120" height="120" rx="8" fill="#a8a29e" opacity="0.3"/><rect x="190" y="60" width="40" height="6" rx="3" fill="#a8a29e" opacity="0.5"/><rect x="190" y="76" width="80" height="6" rx="3" fill="#a8a29e" opacity="0.3"/><rect x="190" y="92" width="60" height="6" rx="3" fill="#a8a29e" opacity="0.2"/><rect x="190" y="120" width="100" height="6" rx="3" fill="#a8a29e" opacity="0.3"/><rect x="190" y="136" width="70" height="6" rx="3" fill="#a8a29e" opacity="0.2"/></svg>
+          </div>
+          <div class="work-card__body">
+            <h3 class="work-card__title">Cosmos Design System</h3>
+            <p class="work-card__desc">A comprehensive design system powering 12 products across web and mobile with full accessibility compliance.</p>
+            <div class="work-card__tags">
+              <span class="work-tag">Design Systems</span>
+              <span class="work-tag">Storybook</span>
+              <span class="work-tag">CSS</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact section" id="contact" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="contact__inner">
+        <div class="contact__intro">
+          <h2 id="contact-heading" class="section__title">Let's work together</h2>
+          <p class="section__desc">I'm always open to new projects, collaborations, or just a good conversation over coffee.</p>
+        </div>
+        <form class="contact__form" id="contactForm" novalidate>
+          <div class="form__field">
+            <label for="contactName" class="form__label">Name</label>
+            <input type="text" id="contactName" name="name" class="form__input" placeholder="Your name" required minlength="2">
+          </div>
+          <div class="form__field">
+            <label for="contactEmail" class="form__label">Email</label>
+            <input type="email" id="contactEmail" name="email" class="form__input" placeholder="you@example.com" required>
+          </div>
+          <div class="form__field">
+            <label for="contactMessage" class="form__label">Message</label>
+            <textarea id="contactMessage" name="message" class="form__textarea" rows="5" placeholder="Tell me about your project..." required minlength="10"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary contact__btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer__inner">
+    <p class="footer__copyright">&copy; 2026 Aria Vasquez. Crafted with care.</p>
+    <a href="#" class="footer__top" aria-label="Back to top">Back to top</a>
+  </div>
+</footer>
