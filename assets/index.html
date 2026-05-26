@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Web Studio</title>
+<meta name="description" content="Natural Language to Production Sites — Chat to develop, see it render instantly. An AI-powered web application that generates single-file HTML/CSS/JS websites through natural language conversation.">
+<meta property="og:title" content="AI Web Studio">
+<meta property="og:description" content="Chat with an AI agent to generate production websites — instantly previewable.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="base-dark.css">
+<style>
+  :root {
+    --c1: #3b82f6; --c1d: #1d4ed8;
+    --c2: #06b6d4; --c2d: #0891b2;
+    --c3: #8b5cf6; --c3d: #6d28d9;
+    --c4: #f59e0b; --c4d: #d97706;
+  }
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: normal;
+  }
+  .hero p {
+    font-size: 17px; color: var(--muted);
+    max-width: 620px; margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .hero-actions {
+    display: flex; gap: 12px; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 22px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer; transition: all .2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--c1); color: #fff; border-color: var(--c1d);
+  }
+  .btn-primary:hover { background: var(--c1d); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border-color: var(--border2);
+  }
+  .btn-outline:hover { background: var(--bg3); border-color: var(--text); }
+
+  .split-panel {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin: 40px 0;
+  }
+  .panel {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .panel-header {
+    padding: 10px 16px; font-size: 11px; font-weight: 600;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .panel-body { padding: 20px; font-size: 13px; }
+  .panel-body .msg { color: var(--muted); margin-bottom: 12px; }
+  .panel-body .agent-msg {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px;
+  }
+  .agent-msg .tool-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0; font-size: 12px;
+    color: var(--muted);
+  }
+  .agent-msg .tool-row .icon {
+    width: 18px; text-align: center; flex-shrink: 0;
+  }
+  .preview-mock {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; min-height: 200px;
+    display: flex; flex-direction: column;
+  }
+  .preview-mock .mock-bar {
+    padding: 6px 10px; border-bottom: 1px solid var(--border);
+    display: flex; gap: 4px;
+  }
+  .mock-bar span {
+    font-size: 10px; color: var(--muted);
+    padding: 2px 8px; border-radius: 4px;
+    background: var(--bg3); cursor: pointer;
+  }
+  .mock-bar span.active { background: var(--c1d); color: #fff; }
+  .mock-content {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    color: var(--faint); font-size: 32px;
+  }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; text-align: center;
+  }
+  .stat-card .stat-num {
+    font-size: 28px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .stat-card .stat-label { font-size: 12px; color: var(--muted); }
+
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin: 20px 0;
+  }
+  .feature-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+    transition: all .2s;
+  }
+  .feature-card:hover {
+    border-color: var(--c1);
+    transform: translateY(-2px);
+  }
+  .feature-card .fc-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-bottom: 12px;
+  }
+  .feature-card h4 { font-size: 14px; margin-bottom: 6px; color: var(--text); }
+  .feature-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .split-panel, .stats-row, .feature-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">AI Web Studio <span>by 1998x-stack</span></span>
+    <a class="nl" href="#what-it-is">Overview</a>
+    <a class="nl" href="#features">Features</a>
+    <a class="nl" href="#start">Quick Start</a>
+    <a class="nl" href="https://github.com/1998x-stack/ai-web">GitHub</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge"><span class="dot"></span>Open Source · MIT License</div>
+    <h1>Chat with AI to <em>build websites</em></h1>
+    <p>
+      Describe the site you want — a landing page, portfolio, blog, or dashboard.
+      The AI agent generates production-ready HTML, CSS, and JavaScript.
+      Preview it instantly. Iterate with natural language.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/1998x-stack/ai-web">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        View on GitHub
+      </a>
+      <a class="btn btn-outline" href="#start">Quick Start</a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-row fade-in">
+    <div class="stat-card"><div class="stat-num" style="color:var(--c1)">11</div><div class="stat-label">Agent Tools</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--c2)">6</div><div class="stat-label">Scaffold Guides</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--c3)">4</div><div class="stat-label">Site Templates</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--c4)">21</div><div class="stat-label">Gotchas</div></div>
+  </div>
+
+  <!-- What It Is -->
+  <section id="what-it-is" class="section fade-in">
+    <div class="section-header">
+      <div class="section-badge"><span class="dot" style="background:var(--c1)"></span>How It Works</div>
+      <h2 class="section-title">Split-Panel Design — Chat &amp; Preview</h2>
+    </div>
+    <p class="section-desc">A three-layer architecture: chat with the agent on the left, preview the generated site on the right.</p>
+
+    <div class="split-panel">
+      <div class="panel">
+        <div class="panel-header">Chat Panel</div>
+        <div class="panel-body">
+          <div class="msg">You</div>
+          <p style="color:var(--text);margin-bottom:12px;font-size:13px">Build a modern SaaS landing page with hero, features, pricing, and footer</p>
+          <div class="agent-msg">
+            <div class="tool-row"><span class="icon">📁</span> read_file workspace/docs/responsive-design.md</div>
+            <div class="tool-row"><span class="icon">📋</span> write_todo — plan: 6 tasks</div>
+            <div class="tool-row"><span class="icon">✏️</span> write_file scripts/index.html</div>
+            <div class="tool-row"><span class="icon">✏️</span> write_file scripts/styles.css</div>
+            <div class="tool-row"><span class="icon">🖼️</span> search_unsplash: "modern office"</div>
+            <div class="tool-row"><span class="icon">🌐</span> build_website — <span style="color:var(--green)">Build Success</span></div>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:var(--green)">✅ Done! Your site is ready. Check the preview on the right.</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">Site Preview</div>
+        <div class="panel-body" style="padding:0">
+          <div class="preview-mock">
+            <div class="mock-bar">
+              <span class="active">375px</span><span>768px</span><span>1200px</span><span>Full</span>
+            </div>
+            <div class="mock-content">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section fade-in">
+    <div class="section-header">
+      <div class="section-badge"><span class="dot" style="background:var(--c2)"></span>Features</div>
+      <h2 class="section-title">Everything You Need for AI-Powered Web Development</h2>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c1) 15%,transparent);color:var(--c1)">💬</div>
+        <h4>Natural Language Driven</h4>
+        <p>Describe your site in Chinese or English. The agent reads scaffold docs, studies templates, and generates optimized code.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c2) 15%,transparent);color:var(--c2)">🤖</div>
+        <h4>Subagent Delegation</h4>
+        <p>Spawns up to 3 research subagents for documentation reading and pattern searching — freeing the main agent for design decisions.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c3) 15%,transparent);color:var(--c3)">⚡</div>
+        <h4>Streaming Generation</h4>
+        <p>Every tool call, reasoning chain, and code output streams in real-time. The entire process is transparent.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c4) 15%,transparent);color:var(--c4)">📦</div>
+        <h4>Self-Contained Builds</h4>
+        <p>All HTML, CSS, and JavaScript inlined into a single file. Zero external dependencies. Instant preview.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c1) 15%,transparent);color:var(--c1)">♿</div>
+        <h4>Accessibility Built-In</h4>
+        <p>Semantic HTML, ARIA labels, keyboard navigation, color contrast, skip-to-content link — all auto-enforced.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background:color-mix(in srgb,var(--c2) 15%,transparent);color:var(--c2)">🔄</div>
+        <h4>Iterative Refinement</h4>
+        <p>Multi-turn conversations refine every aspect — layout, colors, typography, interactivity — without starting over.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="section fade-in">
+    <div class="section-header">
+      <div class="section-badge"><span class="dot" style="background:var(--c3)"></span>Technology</div>
+      <h2 class="section-title">Built with Modern Tools</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="summary-table">
+        <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Framework</td><td><code>Next.js 14</code> (App Router)</td><td>React-based web application</td></tr>
+          <tr><td>Language</td><td><code>TypeScript 5.4</code></td><td>Type-safe development</td></tr>
+          <tr><td>Styling</td><td><code>Tailwind CSS 3.4</code></td><td>Utility-first CSS</td></tr>
+          <tr><td>Agent SDK</td><td><code>DeepSeek API</code> (OpenAI-compatible)</td><td>LLM function calling + streaming</td></tr>
+          <tr><td>Output</td><td><code>Single HTML file</code></td><td>Inlined CSS + JS + base64 assets</td></tr>
+          <tr><td>Sandbox</td><td><code>iframe</code> (allow-scripts)</td><td>Isolated site preview</td></tr>
+          <tr><td>Persistence</td><td><code>JSONL</code> + in-memory Map</td><td>Session storage + restore</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="start" class="section fade-in">
+    <div class="section-header">
+      <div class="section-badge"><span class="dot" style="background:var(--c4)"></span>Get Started</div>
+      <h2 class="section-title">Quick Start</h2>
+    </div>
+    <p class="section-desc">Requires Node.js 18+ and a <a href="https://platform.deepseek.com/" style="color:var(--c1)">DeepSeek API Key</a>.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-dot" style="background:#f85149"></span>
+        <span class="code-dot" style="background:#f59e0b"></span>
+        <span class="code-dot" style="background:#28c840"></span>
+        <span>Terminal</span>
+      </div>
+      <pre><span class="cm"># Clone the repository</span>
+git clone https://github.com/1998x-stack/ai-web.git
+<span class="kw">cd</span> ai-web
+
+<span class="cm"># Install dependencies</span>
+npm install
+
+<span class="cm"># Start the development server</span>
+npm run dev
+<span class="cm"># Open http://localhost:3000</span>
+<span class="cm"># Configure your API key in Settings → start creating sites</span></pre>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer fade-in">
+    <p>AI Web Studio · MIT License · <a href="https://github.com/1998x-stack/ai-web">GitHub</a></p>
+    <p style="font-size:12px;margin-top:8px">Built with Next.js · DeepSeek · Tailwind CSS</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
